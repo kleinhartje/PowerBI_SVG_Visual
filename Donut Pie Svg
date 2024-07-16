@@ -1,0 +1,26 @@
+
+
+Conversion Rate SVG = 
+VAR Label = "Conversion Rate"
+VAR V = [Conversion Rate] // Utilise la mesure Conversion Rate
+VAR VFormatted = FORMAT(V, "0.0%")
+VAR CircleRadius = 80
+VAR CircleCenterX = 100
+VAR CircleCenterY = 100
+VAR CircleCircumference = 2 * PI() * CircleRadius
+VAR FilledPercentage = V * CircleCircumference
+VAR SVGContent = 
+    "<svg width='220' height='220' xmlns='http://www.w3.org/2000/svg'>" &
+        "<rect x='0' y='0' width='220' height='220' rx='10' ry='10' fill='#f0f0f0' stroke='#ccc' stroke-width='2' />" &
+        // Donut chart background
+        "<circle cx='" & CircleCenterX & "' cy='" & CircleCenterY & "' r='" & CircleRadius & "' fill='none' stroke='#e0e0e0' stroke-width='30' />" &
+        // Donut chart filled portion
+        "<circle cx='" & CircleCenterX & "' cy='" & CircleCenterY & "' r='" & CircleRadius & "' fill='none' stroke='green' stroke-width='30' " &
+            "stroke-dasharray='" & FilledPercentage & " " & CircleCircumference & "' transform='rotate(-90 " & CircleCenterX & " " & CircleCenterY & ")' />" &
+        // Percentage text
+        "<text x='" & CircleCenterX & "' y='" & CircleCenterY & "' text-anchor='middle' font-size='40' font-weight='bold' dy='.3em'>" & VFormatted & "</text>" &
+        // Label text
+        "<text x='110' y='200' text-anchor='middle' font-size='24' fill='#666'>" & Label & "</text>" &
+    "</svg>"
+RETURN
+"data:image/svg+xml;utf8," & SVGContent
